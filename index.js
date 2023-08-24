@@ -3,6 +3,14 @@
 if (require('electron-squirrel-startup')) return;
 var XMLHttpRequest = require('xhr2');
 
+const { Notification } = require('electron')
+// const { autoUpdater } = require('electron-updater')
+
+const NOTIFICATION_TITLE_UA = 'Ur from Ukraine'
+const NOTIFICATION_BODY_UA = 'Detect Ukraine IP'
+const NOTIFICATION_TITLE = 'Ur from Russia'
+const NOTIFICATION_BODY = 'Detect Russia IP'
+
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
@@ -70,6 +78,8 @@ module.exports = {
   }
 }
 
+
+
 const createWindow = () => {
   // Create the browser window.
   let mainWindow = null
@@ -80,7 +90,7 @@ const createWindow = () => {
   const primaryDisplay = screen.getPrimaryDisplay()
   const { width, height } = primaryDisplay.workAreaSize
   
-  mainWindow = new BrowserWindow({ width, height, icon: 'F:/Desktop/Pizda/src/AEPSTOREICON.ico' })
+  mainWindow = new BrowserWindow({ width, height, icon: 'F:/Desktop/VSPFS/AEPSTORE-ELECTRON/src/AEPSTOREICON.ico' })
   mainWindow.menuBarVisible = false
   
   /* mainWindow.webContents.session.setProxy({pacScript:"file://F:/Desktop/Pizda/src/proxy_pac.js"}, function () {
@@ -97,13 +107,19 @@ const createWindow = () => {
           if (xhr.status === 200) {
               var response = xhr.response;
               if (response.country == "UA") {
-                  mainWindow.webContents.session.setProxy({proxyRules:"socks5://192.111.134.10:4145"}).then(() => {
+                  mainWindow.webContents.session.setProxy({proxyRules:"socks4://176.118.52.129:3629"}).then(() => {
                       mainWindow.loadURL('http://aepstore.fun:3000/');
-                      console.log("UA")
+                      new Notification({
+                        title: NOTIFICATION_TITLE_UA,
+                        body: NOTIFICATION_BODY_UA
+                      }).show()
                   }).catch((err) => console.error(err));
               } else {
                   mainWindow.loadURL('http://aepstore.fun:3000/');
-                  console.log("RU");
+                  new Notification({
+                    title: NOTIFICATION_TITLE,
+                    body: NOTIFICATION_BODY
+                  }).show()
               }
           } else {
               console.error("Request failed with status:", xhr.status);
@@ -118,10 +134,64 @@ const createWindow = () => {
   // mainWindow.webContents.openDevTools()
 }
 
+if(require('electron-squirrel-startup')) app.quit();
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+  // ///////////////
+  // Auto updater //
+  // ///////////////
+
+  // autoUpdater.on('checking-for-update', () => {
+  //   new Notification({
+  //     title: 'Проверка обновлений',
+  //     body: 'Пожалуйста подождите...'
+  //   }).show()
+  // })
+  // autoUpdater.on('update-available', info => {
+  //   new Notification({
+  //     title: 'Обновление найдено',
+  //     body: 'Нажмите для скачивания обновления'
+  //   }).onclick = autoUpdater.on('download-progress', progressObj => {
+  //     new Notification({
+  //       title: 'Скачивание обновления',
+  //       body: `Скорость скачивания: ${progressObj.bytesPerSecond} - Скачано: ${progressObj.percent}%`
+  //     }).show()
+  //   })
+  // })
+  // autoUpdater.on('update-not-available', info => {
+  //   new Notification({
+  //     title: 'Обновление не найдено',
+  //     body: 'Вы используете последнюю версию'
+  //   }).show()
+  // })
+  // autoUpdater.on('error', err => {
+  //   new Notification({
+  //     title: 'Ошибка при проверке обновления',
+  //     body: `Код ошибки: ${err.toString()}`
+  //   }).show()
+  // })
+  // autoUpdater.on('update-downloaded', info => {
+  //   new Notification({
+  //     title: 'Обновление скачано',
+  //     body: 'Приступить к установке?'
+  //   }).onclick = autoUpdater.on('update-downloaded', info => {
+  //     autoUpdater.quitAndInstall()
+  //     new Notification({
+  //       title: 'Обновление установлено',
+  //       body: 'Удачных покупок!'
+  //     }).show()
+  //   })
+  // })
+
+  require('update-electron-app')({
+    repo: 'catoo-hub/AEPSTORE-ELECTRON',
+    updateInterval: '5 minutes',
+    notifyUser: true
+  })
+
   createWindow()
 
   app.on('activate', () => {
