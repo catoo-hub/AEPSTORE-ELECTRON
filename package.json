@@ -1,7 +1,7 @@
 {
   "name": "aepstore",
-  "version": "1.6.1",
-  "description": "Торговая площадка для эдиторов.",
+  "version": "1.6-b1",
+  "description": "Маркетплейс цифровых товаров.",
   "main": "index.js",
   "scripts": {
     "test": "electron-builder start",
@@ -11,17 +11,17 @@
     "builder-dist": "electron-builder --win --x64",
     "publish": "electron-forge publish"
   },
-  "repository": "https://github.com/Euphori-team/AEPSTORE-ELECTRON",
+  "repository": "https://github.com/catoo-hub/AEPSTORE-ELECTRON",
   "publish": {
     "provider": "github",
     "releaseType": "release"
   },
   "keywords": [],
-  "author": "aepstore-team",
+  "author": "aepstore-dev",
   "ProductName": "aepstore",
-  "CompanyName": "aepstore-team",
-  "FileDescription": "AEPStore.fun App",
-  "appCopyright": "aepstore-team 2022",
+  "CompanyName": "aepstore-dev",
+  "FileDescription": "aepstore.su App",
+  "appCopyright": "aepstore-dev 2025",
   "license": "ISC",
   "devDependencies": {
     "@electron-forge/cli": "^6.4.1",
